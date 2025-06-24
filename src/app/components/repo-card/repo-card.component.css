@@ -1,0 +1,72 @@
+.card {
+  width: 100%;
+  max-width: 400px;
+  height: 320px;
+  padding: 1.5rem;
+  background-color: #0d1117;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease-in-out;
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 25px rgba(88, 166, 255, 0.15);
+}
+
+.card-header {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+}
+
+.card-description {
+  flex: 1;
+  min-height: 0;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+}
+
+.card-topics {
+  flex-shrink: 0;
+  margin-bottom: 1rem;
+  min-height: 2rem;
+}
+
+.card-footer {
+  flex-shrink: 0;
+  margin-top: auto;
+}
+
+.repo-name {
+  max-width: 200px;
+}
+
+.owner-name {
+  max-width: 150px;
+}
+
+.topics-container {
+  max-height: 2rem;
+  overflow: hidden;
+}
+
+.btn-primary {
+  background-color: #238636;
+  color: white;
+  border: none;
+  padding: 0.5rem 1rem;
+  border-radius: 0.375rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.btn-primary:hover {
+  background-color: #2ea043;
+}

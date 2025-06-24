@@ -1,0 +1,82 @@
+<div class="min-h-screen">  <!-- Header Section -->
+  <div class="glass-card mx-4 mt-4 mb-8 py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-8">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#c9d1d9] mb-4">Explore Repositories</h1>
+        <p class="text-xl text-[#8b949e]">Discover amazing open source projects</p>
+      </div>
+
+      <!-- Search Component -->
+      <div class="max-w-2xl mx-auto mb-6">
+        <app-search (search)="onSearch($event)"></app-search>
+      </div>      <!-- Filter Component -->
+      <div class="max-w-4xl mx-auto">
+        <app-filter (filterChange)="onFiltersChange($event)"></app-filter>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- Loading State -->
+    <div *ngIf="loading" class="flex justify-center items-center py-12">
+      <div class="animate-spin rounded-full h-12 w-12 border-b-2 border-[#58a6ff]"></div>
+      <span class="ml-3 text-[#8b949e]">Loading repositories...</span>
+    </div>    <!-- Error State -->
+    <div *ngIf="error && !loading" class="text-center py-12">
+      <div class="card border-red-600/50 bg-red-900/20 max-w-md mx-auto">
+        <svg class="w-12 h-12 text-red-400 mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+        </svg>
+        <h3 class="text-lg font-medium text-red-300 mb-2">Something went wrong</h3>
+        <p class="text-red-400 mb-4">{{ error }}</p>        <button 
+          (click)="loadTrendingRepositories()"
+          class="btn-danger">
+          Try Again
+        </button>
+      </div>
+    </div>    <!-- Results Section -->
+    <div *ngIf="!loading && !error && repositories.length > 0">
+      <!-- Results Header -->
+      <div class="flex justify-between items-center mb-6">
+        <h2 class="text-2xl md:text-3xl font-bold text-[#c9d1d9]">
+          {{ hasSearched ? 'Search Results' : 'Trending Repositories' }}
+          <span class="text-[#8b949e] text-base font-normal ml-2">({{ repositories.length }} repositories)</span>
+        </h2>
+      </div>
+
+      <!-- Repository Grid -->
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+        <app-repo-card 
+          *ngFor="let repo of repositories; trackBy: trackByRepo" 
+          [repository]="repo"
+          (showDetails)="onShowRepositoryDetails($event)">
+        </app-repo-card>
+      </div>
+
+      <!-- Load More Button -->
+      <div *ngIf="hasMorePages" class="text-center">
+        <button 
+          (click)="loadMore()"
+          [disabled]="loading"
+          class="btn-primary disabled:opacity-50 disabled:cursor-not-allowed">
+          {{ loading ? 'Loading...' : 'Load More' }}
+        </button>
+      </div>
+    </div>    <!-- Empty State -->
+    <div *ngIf="!loading && !error && repositories.length === 0" class="text-center py-12">
+      <svg class="w-16 h-16 text-[#8b949e] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <h3 class="text-xl font-medium text-[#c9d1d9] mb-2">No repositories found</h3>
+      <p class="text-[#8b949e]">Try adjusting your search terms or filters</p>
+    </div>
+  </div>
+
+  <!-- Repository Details Modal -->
+  <app-repo-details
+    *ngIf="selectedRepository"
+    [repository]="selectedRepository"
+    [isVisible]="showDetailsModal"
+    (close)="onCloseDetails()">
+  </app-repo-details>
+</div>

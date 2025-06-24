@@ -1,0 +1,112 @@
+<div 
+  class="card cursor-pointer border border-[#30363d] hover:border-[#58a6ff] h-full flex flex-col"
+  (click)="onCardClick($event)">
+  
+  <!-- Repository Header -->
+  <div class="card-header flex items-start justify-between flex-shrink-0">
+    <div class="flex items-center space-x-2 sm:space-x-3 flex-1 min-w-0">
+      <img [src]="repository.owner.avatar_url" 
+           [alt]="repository.owner.login + ' avatar'"
+           class="w-6 h-6 sm:w-8 sm:h-8 rounded-full flex-shrink-0">
+      <div class="min-w-0 flex-1">
+        <a [href]="repository.html_url" 
+           target="_blank" 
+           rel="noopener noreferrer"
+           class="external-link text-[#58a6ff] hover:underline font-semibold text-sm sm:text-lg truncate block repo-name"
+           (click)="$event.stopPropagation()">
+          {{ repository.name }}
+        </a>
+        <p class="text-[#8b949e] text-xs sm:text-sm truncate owner-name">{{ repository.owner.login }}</p>
+      </div>
+    </div>
+    
+    <!-- Favorite Button -->
+    <button (click)="toggleFavorite()" 
+            class="favorite-btn p-1.5 sm:p-2 rounded-full hover:bg-[#30363d] transition-colors flex-shrink-0 touch-target"
+            [class.text-yellow-400]="isFavorite"
+            [class.text-[#8b949e]]="!isFavorite"
+            [attr.aria-label]="isFavorite ? 'Remove from favorites' : 'Add to favorites'">
+      <svg class="w-4 h-4 sm:w-5 sm:h-5" [attr.fill]="isFavorite ? 'currentColor' : 'none'" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+              d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z">
+        </path>
+      </svg>
+    </button>
+  </div>
+
+  <!-- Description -->
+  <div class="card-description flex-1 min-h-0">
+    <p class="text-[#c9d1d9] text-xs sm:text-sm leading-relaxed line-clamp-3">
+      {{ repository.description || 'No description available' }}
+    </p>
+  </div>
+
+  <!-- Topics -->
+  <div class="card-topics flex-shrink-0">
+    <div *ngIf="repository.topics && repository.topics.length > 0" class="topics-container">
+      <div class="flex flex-wrap gap-1 sm:gap-2">
+        <span *ngFor="let topic of repository.topics.slice(0, 3)" 
+              class="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-xs font-medium bg-[#58a6ff]/10 text-[#58a6ff] border border-[#58a6ff]/20">
+          {{ topic }}
+        </span>
+        <span *ngIf="repository.topics.length > 3" 
+              class="inline-flex items-center px-1.5 py-0.5 sm:px-2 sm:py-1 rounded-md text-xs font-medium text-[#8b949e]">
+          +{{ repository.topics.length - 3 }}
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats and Actions Footer -->
+  <div class="card-footer flex-shrink-0 mt-auto">
+    <!-- Stats -->
+    <div class="flex items-center justify-between text-xs sm:text-sm text-[#8b949e] mb-3">
+      <!-- Left side stats -->
+      <div class="flex items-center space-x-2 sm:space-x-4">
+        <!-- Language -->
+        <div *ngIf="repository.language" class="flex items-center space-x-1">
+          <div [class]="getLanguageColor(repository.language)" 
+               class="w-2 h-2 sm:w-3 sm:h-3 rounded-full"></div>
+          <span class="hidden sm:inline">{{ repository.language }}</span>
+        </div>
+        
+        <!-- Stars -->
+        <div class="flex items-center space-x-1">
+          <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
+          </svg>
+          <span>{{ formatNumber(repository.stargazers_count) }}</span>
+        </div>
+        
+        <!-- Forks -->
+        <div class="flex items-center space-x-1">
+          <svg class="w-3 h-3 sm:w-4 sm:h-4" fill="currentColor" viewBox="0 0 20 20">
+            <path fill-rule="evenodd" d="M7.707 3.293a1 1 0 010 1.414L5.414 7H11a7 7 0 017 7v2a1 1 0 11-2 0v-2a5 5 0 00-5-5H5.414l2.293 2.293a1 1 0 11-1.414 1.414L2.586 7l3.707-3.707a1 1 0 011.414 0z" clip-rule="evenodd"></path>
+          </svg>
+          <span>{{ formatNumber(repository.forks_count) }}</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="flex gap-2">
+      <button 
+        (click)="onShowDetails()"
+        class="btn-primary flex-1 text-xs sm:text-sm py-2 sm:py-3 touch-target">
+        <span class="hidden sm:inline">Learn More</span>
+        <span class="sm:hidden">Details</span>
+      </button>
+      
+      <a [href]="repository.html_url" 
+         target="_blank" 
+         rel="noopener noreferrer"
+         class="external-link inline-flex items-center justify-center px-2 sm:px-3 py-2 sm:py-3 border border-[#30363d] rounded-md text-xs sm:text-sm font-medium text-[#c9d1d9] hover:border-[#58a6ff] hover:text-[#58a6ff] transition-colors touch-target"
+         (click)="$event.stopPropagation()">
+        <span class="hidden sm:inline">View</span>
+        <svg class="w-3 h-3 sm:w-4 sm:h-4 sm:ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+        </svg>
+      </a>
+    </div>
+  </div>
+</div>

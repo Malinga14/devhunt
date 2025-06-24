@@ -1,0 +1,99 @@
+<div class="min-h-screen">
+  <!-- Header Section -->
+  <div class="bg-gradient-to-r from-[#0d1117] via-[#161b22] to-[#0d1117] py-12">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center">
+        <h1 class="text-4xl md:text-5xl font-bold text-[#c9d1d9] mb-4">Your Favorites</h1>
+        <p class="text-xl text-[#8b949e]">{{ favorites.length }} saved repositories</p>
+      </div>
+    </div>
+  </div>
+  <!-- Main Content -->
+  <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8">
+    <!-- Empty State -->
+    <div *ngIf="favorites.length === 0" class="text-center py-12">
+      <svg class="w-16 h-16 text-[#8b949e] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+      </svg>
+      <h3 class="text-xl font-medium text-[#c9d1d9] mb-2">No favorites yet</h3>
+      <p class="text-[#8b949e] mb-6">Start exploring repositories and save your favorites!</p>
+      <a href="/explore" class="btn-primary inline-flex items-center">
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        Explore Repositories
+      </a>
+    </div>    <!-- Controls -->
+    <div *ngIf="favorites.length > 0">
+      <div class="flex flex-col sm:flex-row gap-4 justify-between items-start sm:items-center">
+        <!-- Search -->
+        <div class="relative flex-1 max-w-md">
+          <svg class="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-[#8b949e]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+          </svg>          <input
+            type="text"
+            placeholder="Search your favorites..."
+            (input)="onSearch($event)"
+            class="glass-input pl-10">
+        </div>        <!-- Sort and Actions -->
+        <div class="flex gap-3">
+          <!-- Sort Buttons -->
+          <div class="flex bg-[#161b22] rounded-lg p-1 border border-[#30363d]">
+            <button
+              (click)="onSortChange('date')"
+              [class.bg-[#58a6ff]]="sortBy === 'date'"
+              class="px-3 py-1 text-sm rounded transition-colors hover:bg-[#30363d] text-[#c9d1d9]">
+              Date {{ sortBy === 'date' ? (sortOrder === 'desc' ? '↓' : '↑') : '' }}
+            </button>
+            <button
+              (click)="onSortChange('name')"
+              [class.bg-[#58a6ff]]="sortBy === 'name'"
+              class="px-3 py-1 text-sm rounded transition-colors hover:bg-[#30363d] text-[#c9d1d9]">
+              Name {{ sortBy === 'name' ? (sortOrder === 'desc' ? '↓' : '↑') : '' }}
+            </button>
+            <button
+              (click)="onSortChange('stars')"
+              [class.bg-[#58a6ff]]="sortBy === 'stars'"
+              class="px-3 py-1 text-sm rounded transition-colors hover:bg-[#30363d] text-[#c9d1d9]">
+              Stars {{ sortBy === 'stars' ? (sortOrder === 'desc' ? '↓' : '↑') : '' }}
+            </button>
+          </div>          <!-- Action Buttons -->
+          <button
+            (click)="exportFavorites()"
+            class="btn-success">
+            Export
+          </button>
+          <button
+            (click)="clearAllFavorites()"
+            class="btn-danger">
+            Clear All
+          </button>
+        </div>
+      </div>
+    </div>    <!-- Favorites Grid -->
+    <div *ngIf="filteredFavorites.length > 0" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-repo-card 
+        *ngFor="let favorite of filteredFavorites; trackBy: trackByFavorite" 
+        [repository]="convertToGitHubRepo(favorite)"
+        (showDetails)="onShowRepositoryDetails(convertToGitHubRepo(favorite))">
+      </app-repo-card>
+    </div>
+
+    <!-- No Results from Search -->
+    <div *ngIf="favorites.length > 0 && filteredFavorites.length === 0" class="text-center py-12">
+      <svg class="w-12 h-12 text-[#8b949e] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+      </svg>
+      <h3 class="text-lg font-medium text-[#c9d1d9] mb-2">No matching favorites</h3>
+      <p class="text-[#8b949e]">Try adjusting your search terms</p>
+    </div>
+  </div>
+
+  <!-- Repository Details Modal -->
+  <app-repo-details
+    *ngIf="selectedRepository"
+    [repository]="selectedRepository"
+    [isVisible]="showDetailsModal"
+    (close)="onCloseDetails()">
+  </app-repo-details>
+</div>

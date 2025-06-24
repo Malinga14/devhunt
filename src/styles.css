@@ -1,0 +1,285 @@
+/* DevHunt Global Styles */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  }
+  
+  body {
+    @apply bg-[#0d1117] text-[#c9d1d9] antialiased;
+  }
+}
+
+@layer components {  /* Primary button with glassmorphism dark purple effect */
+  .btn-primary {
+    @apply relative overflow-hidden px-6 py-3 rounded-full font-medium text-white transition-all duration-300 ease-out focus:ring-2 focus:ring-purple-400/50 focus:outline-none hover:scale-105;
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 0.95) 0%, 
+      rgba(76, 29, 149, 0.9) 30%,
+      rgba(59, 7, 100, 0.95) 70%,
+      rgba(91, 33, 182, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 
+      0 8px 32px rgba(91, 33, 182, 0.4),
+      0 0 0 1px rgba(124, 58, 237, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15),
+      inset 0 -1px 0 rgba(91, 33, 182, 0.3);
+  }
+  
+  .btn-primary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(255, 255, 255, 0.1), 
+      transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .btn-primary:hover::before {
+    left: 100%;
+  }
+    .btn-primary:hover {
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 1) 0%, 
+      rgba(76, 29, 149, 1) 30%,
+      rgba(59, 7, 100, 1) 70%,
+      rgba(91, 33, 182, 1) 100%);
+    box-shadow: 
+      0 12px 40px rgba(91, 33, 182, 0.6),
+      0 0 0 1px rgba(124, 58, 237, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25),
+      inset 0 -1px 0 rgba(91, 33, 182, 0.5);
+    transform: translateY(-2px) scale(1.05);
+  }
+    /* Secondary button with dark glassmorphism effect */
+  .btn-secondary {
+    @apply relative overflow-hidden px-6 py-3 rounded-full font-medium text-[#c9d1d9] hover:text-purple-200 transition-all duration-300 ease-out focus:ring-2 focus:ring-purple-400/50 focus:outline-none hover:scale-105;
+    background: linear-gradient(135deg, 
+      rgba(30, 27, 75, 0.9) 0%, 
+      rgba(13, 17, 23, 0.95) 40%, 
+      rgba(45, 12, 75, 0.9) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(91, 33, 182, 0.3);
+    box-shadow: 
+      0 4px 16px rgba(91, 33, 182, 0.2),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  }
+  
+  .btn-secondary::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, 
+      transparent, 
+      rgba(139, 92, 246, 0.1), 
+      transparent);
+    transition: left 0.5s ease;
+  }
+  
+  .btn-secondary:hover::before {
+    left: 100%;
+  }
+    .btn-secondary:hover {
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 0.25) 0%, 
+      rgba(30, 27, 75, 0.95) 40%, 
+      rgba(91, 33, 182, 0.25) 100%);
+    border-color: rgba(91, 33, 182, 0.6);
+    box-shadow: 
+      0 8px 24px rgba(91, 33, 182, 0.3),
+      0 0 0 1px rgba(124, 58, 237, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transform: translateY(-1px) scale(1.05);
+  }
+  
+  /* Ghost button with subtle glassmorphism glow */
+  .btn-ghost {
+    @apply relative overflow-hidden px-4 py-2 rounded-lg font-medium text-[#c9d1d9] hover:text-purple-300 border border-transparent transition-all duration-300 ease-out hover:shadow-md;
+    background: transparent;
+    backdrop-filter: blur(10px);
+  }
+    .btn-ghost:hover {
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 0.12) 0%, 
+      rgba(76, 29, 149, 0.08) 100%);
+    border-color: rgba(91, 33, 182, 0.3);
+    box-shadow: 0 4px 12px rgba(91, 33, 182, 0.2);
+    transform: translateY(-1px);
+  }
+  
+  /* Input field with glassmorphism and purple focus */
+  .input-field {
+    @apply bg-[#0d1117]/90 backdrop-blur-sm text-[#c9d1d9] border border-[#30363d] rounded-lg p-3 w-full transition-all duration-300 ease-out focus:ring-2 focus:ring-purple-400/50 focus:outline-none focus:border-purple-400/50 focus:bg-[#0d1117] hover:border-[#484f58];
+  }
+  
+  /* Card with glassmorphism effect matching navbar style */
+  .card {
+    @apply relative overflow-hidden bg-[#161b22]/80 backdrop-blur-sm rounded-xl p-6 border border-[#30363d]/50 shadow-lg shadow-black/20 transition-all duration-300 ease-out hover:scale-[1.02] hover:shadow-xl hover:shadow-purple-500/10 hover:border-purple-400/20 hover:bg-[#161b22]/90;
+  }
+  
+  /* Glow container for special sections */
+  .glow-container {
+    @apply relative overflow-hidden bg-gradient-to-br from-purple-500/5 via-[#161b22]/90 to-blue-500/5 backdrop-blur-sm rounded-xl border border-purple-500/20 shadow-lg shadow-purple-500/10;
+  }
+  
+  /* Filter tag matching navbar accent style */
+  .filter-tag {
+    @apply inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-purple-500/20 text-purple-300 border border-purple-400/30 shadow-sm shadow-purple-500/10 transition-all duration-200 hover:bg-purple-500/30 hover:text-purple-200 hover:shadow-md hover:shadow-purple-500/20;
+  }
+  
+  /* Loading spinner with purple theme */
+  .loading-spinner {
+    @apply animate-spin rounded-full border-2 border-purple-500/20 border-t-purple-400;
+  }
+  
+  /* Section header with gradient text */
+  .section-header {
+    @apply text-2xl md:text-3xl font-bold bg-gradient-to-r from-[#c9d1d9] via-purple-300 to-blue-300 bg-clip-text text-transparent;
+  }
+    /* Danger button with dark glassmorphism effect */
+  .btn-danger {
+    position: relative;
+    overflow: hidden;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, 
+      rgba(153, 27, 27, 0.95) 0%, 
+      rgba(127, 29, 29, 0.9) 30%,
+      rgba(91, 33, 182, 0.2) 70%,
+      rgba(153, 27, 27, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 
+      0 8px 32px rgba(153, 27, 27, 0.4),
+      0 0 0 1px rgba(185, 28, 28, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+    .btn-danger:hover {
+    background: linear-gradient(135deg, 
+      rgba(153, 27, 27, 1) 0%, 
+      rgba(127, 29, 29, 1) 30%,
+      rgba(91, 33, 182, 0.4) 70%,
+      rgba(153, 27, 27, 1) 100%);
+    box-shadow: 
+      0 12px 40px rgba(153, 27, 27, 0.6),
+      0 0 0 1px rgba(185, 28, 28, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px) scale(1.05);
+  }
+    /* Success button with dark glassmorphism effect */
+  .btn-success {
+    position: relative;
+    overflow: hidden;
+    padding: 0.75rem 1.5rem;
+    border-radius: 9999px;
+    font-weight: 500;
+    color: white;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    background: linear-gradient(135deg, 
+      rgba(21, 128, 61, 0.95) 0%, 
+      rgba(15, 118, 110, 0.9) 30%,
+      rgba(91, 33, 182, 0.2) 70%,
+      rgba(21, 128, 61, 0.95) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    box-shadow: 
+      0 8px 32px rgba(21, 128, 61, 0.4),
+      0 0 0 1px rgba(34, 197, 94, 0.5),
+      inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  }
+    .btn-success:hover {
+    background: linear-gradient(135deg, 
+      rgba(21, 128, 61, 1) 0%, 
+      rgba(15, 118, 110, 1) 30%,
+      rgba(91, 33, 182, 0.4) 70%,
+      rgba(21, 128, 61, 1) 100%);
+    box-shadow: 
+      0 12px 40px rgba(21, 128, 61, 0.6),
+      0 0 0 1px rgba(34, 197, 94, 0.8),
+      inset 0 1px 0 rgba(255, 255, 255, 0.25);
+    transform: translateY(-2px) scale(1.05);
+  }
+  
+  /* Small glassmorphism button variant */
+  .btn-sm {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.5rem;
+  }
+  
+  /* Large glassmorphism button variant */
+  .btn-lg {
+    padding: 1rem 2rem;
+    font-size: 1.125rem;
+    border-radius: 9999px;
+  }
+    /* Glassmorphism card with dark navbar-inspired styling */
+  .glass-card {
+    position: relative;
+    overflow: hidden;
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 0.08) 0%, 
+      rgba(22, 27, 34, 0.95) 25%, 
+      rgba(22, 27, 34, 0.9) 75%, 
+      rgba(91, 33, 182, 0.08) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(91, 33, 182, 0.3);
+    border-radius: 1rem;
+    box-shadow: 
+      0 8px 32px rgba(91, 33, 182, 0.15),
+      inset 0 1px 0 rgba(255, 255, 255, 0.08);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+    .glass-card:hover {
+    background: linear-gradient(135deg, 
+      rgba(91, 33, 182, 0.12) 0%, 
+      rgba(22, 27, 34, 0.98) 25%, 
+      rgba(22, 27, 34, 0.92) 75%, 
+      rgba(91, 33, 182, 0.12) 100%);
+    border-color: rgba(91, 33, 182, 0.5);
+    box-shadow: 
+      0 12px 40px rgba(91, 33, 182, 0.25),
+      inset 0 1px 0 rgba(255, 255, 255, 0.12);
+    transform: translateY(-2px);
+  }
+    /* Glassmorphism input with dark navbar styling */
+  .glass-input {
+    background: linear-gradient(135deg, 
+      rgba(13, 17, 23, 0.95) 0%, 
+      rgba(30, 27, 75, 0.8) 100%);
+    backdrop-filter: blur(20px) saturate(180%);
+    border: 1px solid rgba(91, 33, 182, 0.3);
+    border-radius: 0.75rem;
+    padding: 0.75rem 1rem;
+    color: #c9d1d9;
+    width: 100%;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+    .glass-input:focus {
+    outline: none;
+    border-color: rgba(91, 33, 182, 0.7);
+    box-shadow: 
+      0 0 0 2px rgba(91, 33, 182, 0.3),
+      0 4px 12px rgba(91, 33, 182, 0.2);
+    background: linear-gradient(135deg, 
+      rgba(13, 17, 23, 0.98) 0%, 
+      rgba(30, 27, 75, 0.9) 100%);
+  }
+  
+  .glass-input::placeholder {
+    color: #8b949e;
+  }
+}

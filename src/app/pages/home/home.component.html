@@ -1,0 +1,113 @@
+<div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12">  <!-- Hero Section -->
+  <div class="text-center">
+    <h1 class="text-4xl md:text-6xl font-bold text-[#c9d1d9] mb-6">
+      Discover Amazing 
+      <span class="text-[#58a6ff]">Open Source</span> 
+      Projects
+    </h1>
+    <p class="text-xl text-[#8b949e] max-w-3xl mx-auto mb-8">
+      Explore trending repositories, discover new technologies, and find the perfect projects to contribute to or learn from.
+    </p>
+    
+    <!-- Search Bar -->
+    <div class="max-w-2xl mx-auto mb-8">
+      <app-search (search)="onSearch($event)"></app-search>
+    </div>    <!-- Quick Action Buttons -->
+    <div class="flex flex-wrap gap-4 justify-center">
+      <button (click)="exploreAll()" 
+              class="btn-primary inline-flex items-center">
+        <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
+        </svg>
+        Explore All Projects
+      </button>
+      <button (click)="viewFavorites()" 
+              class="btn-secondary inline-flex items-center">
+        <svg class="mr-2 w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
+        </svg>
+        View Favorites ({{ favoriteCount }})
+      </button>
+    </div>
+  </div>
+  <!-- Trending Repositories Section -->
+  <div>
+    <div class="flex items-center justify-between mb-6">
+      <h2 class="text-2xl md:text-3xl font-bold text-[#c9d1d9]">Trending Today</h2>
+      <button (click)="refreshTrending()" 
+              [disabled]="loading"
+              class="text-[#58a6ff] hover:text-[#58a6ff]/80 text-sm font-medium disabled:opacity-50 transition-colors">
+        <svg class="w-4 h-4 inline mr-1" [class.animate-spin]="loading" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+        </svg>
+        Refresh
+      </button>
+    </div>    <!-- Loading State -->
+    <div *ngIf="loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <div *ngFor="let item of [1,2,3,4,5,6]" class="card animate-pulse">
+        <div class="flex items-center space-x-3 mb-4">
+          <div class="w-8 h-8 bg-[#30363d] rounded-full"></div>
+          <div class="flex-1 space-y-2">
+            <div class="h-4 bg-[#30363d] rounded w-3/4"></div>
+            <div class="h-3 bg-[#30363d] rounded w-1/2"></div>
+          </div>
+        </div>
+        <div class="space-y-3">
+          <div class="h-3 bg-[#30363d] rounded"></div>
+          <div class="h-3 bg-[#30363d] rounded w-5/6"></div>
+          <div class="h-3 bg-[#30363d] rounded w-4/6"></div>
+        </div>
+      </div>
+    </div>    <!-- Repository Grid -->
+    <div *ngIf="!loading" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+      <app-repo-card 
+        *ngFor="let repo of trendingRepos" 
+        [repository]="repo"
+        (showDetails)="onShowRepositoryDetails(repo)">
+      </app-repo-card>
+    </div>    <!-- Empty State -->
+    <div *ngIf="!loading && trendingRepos.length === 0" class="text-center py-12">
+      <svg class="mx-auto h-12 w-12 text-[#8b949e] mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+      </svg>
+      <h3 class="text-lg font-medium text-[#c9d1d9] mb-2">No repositories found</h3>
+      <p class="text-[#8b949e]">Try refreshing or check your connection.</p>
+    </div>
+  </div>
+  <!-- Popular Languages Section -->
+  <div>
+    <h2 class="text-2xl md:text-3xl font-bold text-[#c9d1d9] mb-6">Popular Languages</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-6 gap-4">      <button *ngFor="let language of popularLanguages" 
+              (click)="searchByLanguage(language.name)"
+              class="glass-card flex flex-col items-center p-4 group">
+        <div [class]="language.color" class="w-8 h-8 rounded-full mb-2"></div>
+        <span class="text-sm font-medium text-[#c9d1d9] group-hover:text-purple-300 transition-colors">{{ language.name }}</span>
+      </button>
+    </div>
+  </div>  <!-- Statistics Section -->
+  <div class="glass-card p-6">
+    <h2 class="text-xl md:text-2xl font-bold text-[#c9d1d9] mb-6">Your DevHunt Statistics</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div class="text-center">
+        <div class="text-3xl font-bold text-[#58a6ff] mb-2">{{ favoriteCount }}</div>
+        <div class="text-[#8b949e]">Repositories Saved</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-[#58a6ff] mb-2">{{ searchCount }}</div>
+        <div class="text-[#8b949e]">Searches Performed</div>
+      </div>
+      <div class="text-center">
+        <div class="text-3xl font-bold text-[#58a6ff] mb-2">{{ trendingRepos.length }}</div>
+        <div class="text-[#8b949e]">Trending Today</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Repository Details Modal -->
+  <app-repo-details
+    *ngIf="selectedRepository"
+    [repository]="selectedRepository"
+    [isVisible]="showDetailsModal"
+    (close)="onCloseDetails()">
+  </app-repo-details>
+</div>
